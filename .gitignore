@@ -1,0 +1,10 @@
+.vs/
+bin/
+Migrations/
+obj/
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Local.json
+*.user
+SqlCredentials.json
