@@ -1,0 +1,12 @@
+".NET build outputs" 
+"bin/" 
+"obj/" 
+"" 
+".vs/" 
+"*.csproj.user" 
+"*.user" 
+"*.userprefs" 
+"*.appsettings.json"
+*.nupkg
+.idea/
+appsettings.json
