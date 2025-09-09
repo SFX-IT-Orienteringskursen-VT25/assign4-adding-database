@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: additionapi-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=StrongP@ssword123
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - additionapi-network
+
+  api:
+    build: .
+    container_name: additionapi
+    ports:
+      - "5000:8080"
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=MyDatabase;User Id=sa;Password=StrongP@ssword123;TrustServerCertificate=True;
+    networks:
+      - additionapi-network
+
+volumes:
+  sqlserver_data:
+
+networks:
+  additionapi-network:
+    driver: bridge
