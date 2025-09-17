@@ -1,0 +1,15 @@
+﻿CREATE DATABASE AdditionDb;
+GO
+
+USE AdditionDb;
+GO
+
+
+CREATE TABLE CalculationStorage (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    QT FLOAT NOT NULL,
+    VAL FLOAT NOT NULL,
+    TMP NVARCHAR(50) NOT NULL,
+    Result FLOAT NOT NULL
+);
+GO
