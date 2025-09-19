@@ -1,12 +1,9 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-      options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -44,22 +41,10 @@ app.MapPost("/api/storage", async (AppDbContext appDbContext, Record record) =>
 
 // GET /api/storage/{key} - equivalent to localStorage.getItem
 app.MapGet("/api/storage/{key}", async (AppDbContext appDbContext, string key) =>
-    await appDbContext.Records.FindAsync(key) is Record record ? Results.Ok(record.Value) : Results.NotFound());
-
+{
+    var result = await appDbContext.Records.FindAsync(key);
+    return result is not null ? Results.Ok(result.Value) : Results.NotFound();
+});
 
 // run the app
 app.Run();
-
- public class AppDbContext : DbContext
-  {
-      public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-      public DbSet<Record> Records  => Set<Record>();
-  }
-  
-[Table("Record")]
-public class Record
-{
-    [Key]
-    public string Key { get; set; } = string.Empty;
-    public string Value { get; set; } = string.Empty;
-}
