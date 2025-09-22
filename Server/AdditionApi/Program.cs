@@ -13,13 +13,20 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    await DockerStarter.StartDockerContainerAsync();
+
+    Database.Setup();
 }
 
 app.UseHttpsRedirection();
 
 
-app.MapPost("/addNumber", (InputNumber data) =>
+app.MapPost("/number", (InputNumber data) =>
 {
+
+    Database.InsertValue(data.Value.ToString());
+    Database.Select();
     Console.WriteLine($"Number received: {data.Value}");
 
     return Results.Ok(new
@@ -30,9 +37,14 @@ app.MapPost("/addNumber", (InputNumber data) =>
 
 app.MapGet("/numbers", () =>
 {
-    int[] numbers = { 10, 20, 30 };
-    Console.WriteLine("Returning multiple numbers");
-    return Results.Ok(numbers);
+    var rows = Database.GetAllRows();
+    return Results.Ok(rows.Select(row => new { row.Id, row.Value }));
+});
+
+app.MapDelete("/numbers", () =>
+{
+    Database.DeleteAll();
+    return Results.NoContent();
 });
 
 app.Run();
