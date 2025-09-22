@@ -1,3 +1,21 @@
+# Build artifacts
+bin/
+obj/
+**/bin/
+**/obj/
+.vs/
+
+# User-specific
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Debug/Publish outputs
+*.pdb
+*.dll
+*.exe
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 [Bb]in/
 [Oo]bj/
