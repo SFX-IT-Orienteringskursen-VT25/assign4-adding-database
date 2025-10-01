@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add and Summarize Numbers</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Add a Number and Summarize Them</h1>
+        <p>Enter a number below. The calculator will correctly summarize the numbers.</p>
+        <p><strong>Bonus improvement:</strong> Prevents adding invalid inputs.</p>
+        
+        <input type="text" id="numberInput" placeholder="Enter an integer">
+        <button id="addButton">Add Number</button>
+        <button id="clearButton">Clear Data</button>
+        
+        <div class="list">
+            <div id="numberList"></div>
+            =
+            <h3><span id="totalSum">0</span></h3>
+        </div>
+    </div>
+
+    <script type="module">
+        import { NumberService } from './numberService.js';
+        const numberService = new NumberService();
+
+        const numberInput = document.getElementById('numberInput');
+        const addButton = document.getElementById('addButton');
+        const clearButton = document.getElementById('clearButton');
+        const numberList = document.getElementById('numberList');
+        const totalSum = document.getElementById('totalSum');
+
+        async function updateUserInterface() {
+            const numbers = await numberService.getStoredNumbers();
+            numberList.textContent = numbers.length ? numbers.join(' + ') : "No numbers yet";
+            totalSum.textContent = numberService.calculateSum(numbers);
+        }
+
+        async function addNumber() {
+            const number = numberInput.value.trim();
+
+            if (!/^-?\d+$/.test(number)) {
+                alert('Please enter a valid integer.');
+                return;
+            }
+
+            const numValue = parseInt(number, 10);
+            const numbers = await numberService.getStoredNumbers();
+            numbers.push(numValue);
+            await numberService.saveNumbers(numbers);
+
+            updateUserInterface();
+            numberInput.value = '';
+            numberInput.focus();
+        }
+
+        addButton.addEventListener('click', addNumber);
+
+        clearButton.addEventListener('click', async function () {
+            await numberService.saveNumbers([]);
+            updateUserInterface();
+        });
+
+        window.onload = updateUserInterface;
+    </script>
+</body>
+</html>
