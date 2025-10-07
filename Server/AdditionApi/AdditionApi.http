@@ -1,6 +1,6 @@
 @AdditionApi_HostAddress = http://localhost:5000
 
-### Save value (like localStorage.setItem)
+### Save value
 POST {{AdditionApi_HostAddress}}/storage
 Content-Type: application/json
 
@@ -11,6 +11,6 @@ Content-Type: application/json
 
 ###
 
-### Retrieve value (like localStorage.getItem)
+### Retrieve value
 GET {{AdditionApi_HostAddress}}/storage/username
 Accept: application/json
