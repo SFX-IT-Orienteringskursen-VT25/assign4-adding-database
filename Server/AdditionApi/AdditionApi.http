@@ -1,0 +1,9 @@
+@AdditionApi_HostAddress = http://localhost:5262
+
+GET {{AdditionApi_HostAddress}}/api/numbers
+Accept: application/json
+
+POST {{AdditionApi_HostAddress}}/api/numbers
+Content-Type: application/json
+Body: { "value": 10 }
+

@@ -1,0 +1,24 @@
+{
+  "name": "assign4-adding-database",
+  "version": "1.0.0",
+  "description": "The assignment was introduced in Class #8. In the link you can find the slides from the presentation as well as a recording of the class.\r https://classroom.google.com/c/MjI5OTg3MzMwODFa/p/MjM0NjU0MTY0MTVa/details",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SFX-IT-Orienteringskursen-VT25/assign4-adding-database.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SFX-IT-Orienteringskursen-VT25/assign4-adding-database/issues"
+  },
+  "homepage": "https://github.com/SFX-IT-Orienteringskursen-VT25/assign4-adding-database#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mssql": "^12.0.0"
+  }
+}
