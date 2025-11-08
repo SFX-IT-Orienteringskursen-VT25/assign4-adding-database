@@ -129,4 +129,6 @@ emulator
 Thumbs.db
 /.vs
 
+.env
+
 .npmrc
