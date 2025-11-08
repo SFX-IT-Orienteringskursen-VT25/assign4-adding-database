@@ -1,0 +1,31 @@
+{
+  "name": "assign3-addition-api",
+  "version": "1.0.0",
+  "description": "The assignment was introduced in Class #7. In the link you can find the slides from the presentation as well as a recording of the class. https://classroom.google.com/c/MjI5OTg3MzMwODFa/p/MjE1MTI3MzM0MzNa/details",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest",
+    "start": "node server.js",
+    "dev": "nodemon --watch server.js server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SFX-IT-Orienteringskursen-VT25/assign3-addition-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SFX-IT-Orienteringskursen-VT25/assign3-addition-api/issues"
+  },
+  "homepage": "https://github.com/SFX-IT-Orienteringskursen-VT25/assign3-addition-api#readme",
+  "type": "module",
+  "devDependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "i": "^0.3.7",
+    "nodemon": "^3.1.10",
+    "npm": "^10.9.4",
+    "vitest": "^3.2.4"
+  }
+}
