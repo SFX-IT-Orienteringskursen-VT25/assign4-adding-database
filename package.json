@@ -1,7 +1,7 @@
 {
-  "name": "assign3-addition-api",
+  "name": "assign4-adding-database",
   "version": "1.0.0",
-  "description": "The assignment was introduced in Class #7. In the link you can find the slides from the presentation as well as a recording of the class. https://classroom.google.com/c/MjI5OTg3MzMwODFa/p/MjE1MTI3MzM0MzNa/details",
+  "description": "A simple addition API with database integration",
   "main": "index.js",
   "scripts": {
     "test": "vitest",
@@ -27,5 +27,9 @@
     "nodemon": "^3.1.10",
     "npm": "^10.9.4",
     "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "mssql": "^12.1.0"
   }
 }
