@@ -1,31 +1,170 @@
-# assign4-adding-database
-The assignment was introduced in Class #8. In the link you can find the slides from the presentation as well as a recording of the class.
-https://classroom.google.com/c/MjI5OTg3MzMwODFa/p/MjM0NjU0MTY0MTVa/details
+# 📘 Addition Storage API (Assignment 4)
 
-Class #9 contains my aggregated feedback on your first attempts at the assignment.
-https://classroom.google.com/c/MjI5OTg3MzMwODFa/p/ODA3MDA5NDI3MjE5/details
+This project provides a simple REST API for storing numeric values under named keys, retrieving stored data, and appending new values.
+Originally implemented with an in-memory store with Map in assignment 3, the project has now been refactored to use **SQL Server** for persistent storage.
 
-This simple example shows you how to setup MS SQL server in Docker from your application code
-https://github.com/SFX-IT-Orienteringskursen-VT25/setup-mssql-with-docker-example
+---
 
-## Instructions
-Don't start this assignment until you have finshed assignment 3!
+# 🚀 Endpoints Overview
 
-Clone this repository
+## ### **POST `/storage/:key`**
 
-Reuse your application from assignment 3.
+Append one or more numeric values to a given key.
+If the key does not exist, it is automatically created.
 
-Create a branch
+### **Example Request**
 
-Requirements:
-- The Api should use MS SQL as the persistence layer
-- The MS SQL server should be hosted in Docker
-- The methods for saving and retrieving data should be done towards the MS SQL database
+```
+POST http://localhost:3000/storage/enteredNumbers
 
-Commit
+{
+  "value": ["10", 23]
+}
+```
 
-Push your branch
+### **Example Response (201 Created or 200 OK)**
 
-Create a pull request `<your branch> => <main>`
+```json
+{
+  "key": "enteredNumbers",
+  "values": [35, 10, 23],
+  "sum": 68,
+  "appended": [10, 23]
+}
+```
 
-Done!
+### Behavior
+
+* Converts all inputs to numeric values.
+* Invalid numbers are ignored.
+* Returns:
+
+  * All stored values
+  * Updated sum
+  * Appended values
+
+---
+
+## ### **GET `/storage/:key`**
+
+Retrieve all values for a given key.
+
+### **Example Success (200 OK)**
+
+```json
+{
+  "key": "enteredNumbers",
+  "values": [35, 10, 23],
+  "sum": 68
+}
+```
+
+### **Example Error (404 Not Found)**
+
+```json
+{
+  "error": "Not found",
+  "key": "enteredNumbers_3"
+}
+```
+
+---
+
+## ### **GET `/storage`**
+
+Return all stored keys along with their values and sums.
+
+### **Example Response**
+
+```json
+{
+  "count": 2,
+  "data": {
+    "enteredNumbers": {
+      "values": [35, 10, 23],
+      "sum": 68
+    },
+    "enteredNumbers_2": {
+      "values": [1, 2, 4, 10, -3],
+      "sum": 14
+    }
+  }
+}
+```
+
+---
+
+# 🗄️ Database Design (Updated Implementation)
+
+The API now uses **SQL Server** instead of an in-memory Map.
+Two tables are used:
+
+## ### **Table: `buckets`**
+
+Stores metadata for each key.
+
+| Column       | Type             | Description                        |
+| ------------ | ---------------- | ---------------------------------- |
+| `key`        | NVARCHAR(256) PK | Identifier used in the API         |
+| `sum`        | DECIMAL(18,4)    | Running total of all stored values |
+| `created_at` | DATETIME2        | Row creation timestamp             |
+| `updated_at` | DATETIME2        | Last modified timestamp            |
+
+---
+
+## ### **Table: `bucket_entries`**
+
+Stores individual numeric values appended to a key.
+
+| Column       | Type             | Description                          |
+| ------------ | ---------------- | ------------------------------------ |
+| `id`         | INT IDENTITY PK  | Auto-incrementing identifier         |
+| `key`        | NVARCHAR(256) FK | Foreign key mapping to `buckets.key` |
+| `value`      | DECIMAL(18,4)    | Stored numeric value                 |
+| `created_at` | DATETIME2        | Insert timestamp                     |
+
+---
+
+# 🔄 Transaction Flow (How Writes Work)
+
+When handling a `POST /storage/:key` request:
+
+1. **Begin SQL Transaction**
+2. **Ensure bucket exists**
+
+   ```sql
+   IF NOT EXISTS (...) INSERT ...
+   ```
+3. **Insert each numeric value** into `bucket_entries`
+4. **Update the bucket sum** in `buckets.sum`
+5. **Commit the transaction**
+6. On any error → **Rollback**
+
+This guarantees atomic updates and prevents partial writes.
+
+---
+
+# 🧪 Testing
+
+The project includes **unit tests for utility functions and database logic** using:
+
+* **Vitest** for test execution
+* **Mocked SQL Server (`mssql`) objects** to avoid real DB connections
+* **Mocked `getDb()` pool**, `Transaction`, and `Request` objects
+* Full coverage of:
+
+  * Value normalization
+  * In-memory bucket logic
+  * Database write/read flow
+  * Transaction commit/rollback behavior
+
+---
+
+# 🤖 AI Disclosure
+
+Parts of this project—specifically:
+
+* Unit test generation
+* Mocking strategy for SQL Server
+* Test structure and refactoring help
+* This README
