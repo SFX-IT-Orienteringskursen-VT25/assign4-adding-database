@@ -3,6 +3,21 @@
 This project provides a simple REST API for storing numeric values under named keys, retrieving stored data, and appending new values.
 Originally implemented with an in-memory store with Map in assignment 3, the project has now been refactored to use **SQL Server** for persistent storage.
 
+
+---
+## Running with Docker (API + MS SQL + SQLPad)
+
+This project is fully dockerized and uses MS SQL Server as the persistence layer.
+
+### Prerequisites
+- Docker and Docker Compose installed
+
+### Start the stack
+
+```bash
+docker compose up --build
+```
+
 ---
 
 # 🚀 Endpoints Overview
