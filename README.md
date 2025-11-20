@@ -87,23 +87,23 @@ Retrieve all values for a given key.
 
 ## ### **GET `/storage`**
 
-Return all stored keys along with their values and sums.
+Return all stored keys along with their sums.
 
 ### **Example Response**
 
 ```json
 {
-  "count": 2,
-  "data": {
-    "enteredNumbers": {
-      "values": [35, 10, 23],
-      "sum": 68
-    },
-    "enteredNumbers_2": {
-      "values": [1, 2, 4, 10, -3],
-      "sum": 14
-    }
-  }
+    "count": 2,
+    "buckets": [
+        {
+            "key": "enteredNumbers_1",
+            "sum": 24
+        },
+        {
+            "key": "enteredNumbers_2",
+            "sum": 35
+        }
+    ]
 }
 ```
 
