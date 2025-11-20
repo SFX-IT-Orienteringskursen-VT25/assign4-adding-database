@@ -98,17 +98,17 @@ describe('storage.js', () => {
             recordset: [
                 { key: 'A', sum: 10 },
                 { key: 'B', sum: 25 },
-            ]
+            ],
         });
 
         const result = await getAllBucketsDb();
 
         expect(result).toEqual({
             count: 2,
-            data: {
-                A: { values: [], sum: 10 },
-                B: { values: [], sum: 25 },
-            }
+            buckets: [
+                { key: 'A', sum: 10 },
+                { key: 'B', sum: 25 },
+            ],
         });
     });
 });
