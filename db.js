@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import sql from 'mssql';
 
-const config = {
+export const config = {
     server: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT, 10),
     user: process.env.DB_USER,
