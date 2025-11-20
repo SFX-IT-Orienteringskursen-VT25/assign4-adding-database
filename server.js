@@ -22,12 +22,13 @@ app.get('/db-version', async (req, res) => {
 
 app.get("/storage", async (_req, res) => {
   try {
-    const { count, data } = await getAllBucketsDb();
-    res.status(200).json({ count, data });
+    const result = await getAllBucketsDb();
+    res.status(200).json(result);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 });
+
 
 app.get("/storage/:key", async (req, res) => {
   const { key } = req.params;

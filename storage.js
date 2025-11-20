@@ -28,14 +28,16 @@ export async function getAllBucketsDb() {
   const pool = await getDb();
   const result = await pool.request().query(`
     USE ${DB};
-    SELECT [key], [sum] FROM dbo.buckets;
+    SELECT [key], [sum] FROM dbo.buckets ORDER BY [key];
   `);
 
-  const data = {};
-  for (const row of result.recordset) {
-    data[row.key] = { values: [], sum: Number(row.sum) };
-  }
-  return { count: result.recordset.length, data };
+  return {
+    count: result.recordset.length,
+    buckets: result.recordset.map(row => ({
+      key: row.key,
+      sum: Number(row.sum),
+    })),
+  };
 }
 
 export async function appendNumbersDb(key, incoming) {
