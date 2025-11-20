@@ -1,17 +1,14 @@
 import express from "express";
 import cors from "cors";
 import { appendNumbers, getOrInitBucket } from "./utils.js";
-import { getDb } from './db.js';
 import { appendNumbersDb, getBucketDb, getAllBucketsDb } from "./storage.js";
+import { connectWithRetry } from "./db-connect.js";
+import "./db-init.js"; // Runs DB + schema creation once
+import { getDb } from "./db.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-getDb().catch((err) => {
-  console.error('MSSQL connection failed:', err);
-  process.exit(1);
-});
 
 app.get('/db-version', async (req, res) => {
   try {
@@ -31,7 +28,6 @@ app.get("/storage", async (_req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
-
 
 app.get("/storage/:key", async (req, res) => {
   const { key } = req.params;
@@ -61,5 +57,18 @@ app.post("/storage/:key", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`API on http://localhost:${PORT}`));
+async function startServer() {
+  try {
+    await connectWithRetry();
+
+    const PORT = process.env.PORT || 4000;
+    app.listen(PORT, () =>
+      console.log(`🚀 API running at http://localhost:${PORT}`)
+    );
+  } catch (err) {
+    console.error("❌ FATAL: Could not start server:", err);
+    process.exit(1);
+  }
+}
+
+startServer();
