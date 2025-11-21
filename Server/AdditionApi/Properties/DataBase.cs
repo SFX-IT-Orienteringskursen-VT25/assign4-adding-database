@@ -21,9 +21,11 @@ public static class Database
         BEGIN
             CREATE TABLE {TableName} (
                 [Id] INT PRIMARY KEY IDENTITY,
-                [Value] VARCHAR(50) NOT NULL
+                [Key] NVARCHAR(200) NOT NULL UNIQUE,
+                [Value] NVARCHAR(MAX) NULL
             );
-        END";
+        END
+        ";
         createTableCommand.ExecuteNonQuery();
     }
 
@@ -67,7 +69,36 @@ public static class Database
         DELETE FROM {TableName};";
         insertCommand.ExecuteNonQuery();
     }
+        public static string? GetValue(string key)
+    {
+        using var sqlConnection = CreateConnection();
+        using var command = sqlConnection.CreateCommand();
+        command.CommandText = $@"
+        USE {DbName};
+        SELECT TOP 1 [Value]
+        FROM {TableName}
+        WHERE [Key] = @key;";
+        command.Parameters.AddWithValue("@key", key);
 
+        var result = command.ExecuteScalar();
+        return result == DBNull.Value ? null : result?.ToString();
+    }
+
+    public static void UpsertValue(string key, string? value)
+    {
+        using var sqlConnection = CreateConnection();
+        using var command = sqlConnection.CreateCommand();
+        command.CommandText = $@"
+        USE {DbName};
+        MERGE {TableName} AS target
+        USING (VALUES (@key, @value)) AS source([Key], [Value])
+            ON target.[Key] = source.[Key]
+        WHEN MATCHED THEN UPDATE SET [Value] = source.[Value]
+        WHEN NOT MATCHED THEN INSERT ([Key], [Value]) VALUES (source.[Key], source.[Value]);";
+        command.Parameters.AddWithValue("@key", key);
+        command.Parameters.AddWithValue("@value", (object?)value ?? DBNull.Value);
+        command.ExecuteNonQuery();
+    }
     private static SqlConnection CreateConnection()
     {
         var sqlConnection = new SqlConnection($"Server=localhost,1433;Database=master;User Id=sa;Password={SqlCredentials.Password};TrustServerCertificate=True;");

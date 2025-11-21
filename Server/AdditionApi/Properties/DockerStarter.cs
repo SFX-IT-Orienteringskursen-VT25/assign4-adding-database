@@ -6,8 +6,10 @@ public class DockerStarter
 {
     public static async Task StartDockerContainerAsync()
     {
-        var dockerClient = new DockerClientConfiguration(new Uri("npipe://./pipe/docker_engine")).CreateClient();
-
+        //var dockerClient = new DockerClientConfiguration(new Uri("npipe://./pipe/docker_engine")).CreateClient();
+        var dockerClient = new DockerClientConfiguration(
+            new Uri("unix:///var/run/docker.sock")
+        ).CreateClient();
         await dockerClient.Images.CreateImageAsync(
             new ImagesCreateParameters { FromImage = "mcr.microsoft.com/mssql/server", Tag = "2022-latest" },
             null,
