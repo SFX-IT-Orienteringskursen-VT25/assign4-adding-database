@@ -5,7 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+var storage = new Dictionary<string, string>();
+builder.Services.AddSingleton<IDictionary<string, string>>(storage);
+
 builder.Services.AddOpenApi();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -16,32 +20,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-var storage = new Dictionary<string, string>();
-
-app.MapGet("/", () =>
-{
-    return "Hello to the Addition API!";
-});
-
-app.MapGet("/addition/{key}",([FromRoute] string key) =>
-{
-    if(storage.TryGetValue(key, out var value))
-    {
-        return Results.Ok(value);
-    }
-    return Results.NotFound(new { Message = $"Key '{key}' not found." });
-});
-
-app.MapPost("/addition", ([FromBody] StorageRecord storageRecord) =>
-{
-    if(storage.ContainsKey(storageRecord.Key))
-    {
-        return Results.Conflict(new { Message = $"Key '{storageRecord.Key}' already exists." });
-    }
-    storage[storageRecord.Key] = storageRecord.Value;
-    return Results.Created($"/addition/{storageRecord.Key}", storageRecord.Value);
-});
-
+app.MapControllers();
 app.Run();
 
