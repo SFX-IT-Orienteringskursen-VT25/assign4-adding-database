@@ -1,15 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
 using AdditionApi;
-
+using AdditionApi.Repository;
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-var storage = new Dictionary<string, string>();
-builder.Services.AddSingleton<IDictionary<string, string>>(storage);
-
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+builder.Services.AddScoped<IAdditionRepository,AdditionRepository>();
+
 
 var app = builder.Build();
 
@@ -18,6 +13,9 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+await DockerStarter.StartDockerContainerAsync();
+Database.Setup();
 
 app.UseHttpsRedirection();
 app.MapControllers();

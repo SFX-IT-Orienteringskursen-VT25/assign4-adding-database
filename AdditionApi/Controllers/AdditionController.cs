@@ -1,4 +1,5 @@
 using AdditionApi;
+using AdditionApi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -6,31 +7,46 @@ using Microsoft.AspNetCore.Mvc;
 
 public class AdditionController : ControllerBase
 {
-    private IDictionary<string,string> _storage;
+    private IAdditionRepository _additionRepository;
 
-    public AdditionController(IDictionary<string,string> storage)
+    public AdditionController(IAdditionRepository additionRepository)
     {
-        _storage = storage;
+        _additionRepository = additionRepository;
     }
 
-    [HttpGet("{key}")]
-    public IActionResult GetMappings(string key)
+    [HttpGet("NumberList")]
+    public ActionResult<List<string>> GetNumbers()
     {
-        if(_storage.TryGetValue(key, out var value))
-        {
-            return Ok(value);
-        }
-        return NotFound(new { Message = $"Key '{key}' not found." });
+        var results = _additionRepository.Select();
+        return Ok(results);
     }
 
     [HttpPost]
-    public IActionResult PostMappings([FromBody] StorageRecord storageRecord)
+    public IActionResult InsertNumber([FromBody] string value)
     {
-         if(_storage.ContainsKey(storageRecord.Key))
-    {
-        return Conflict(new { Message = $"Key '{storageRecord.Key}' already exists." });
+        _additionRepository.InsertValue(value);
+        return Ok();
     }
-    _storage[storageRecord.Key] = storageRecord.Value;
-    return Created($"/addition/{storageRecord.Key}", storageRecord.Value);
+
+    [HttpGet("TotalSum")]
+    public ActionResult<string> GetTotal()
+    {
+        var results = _additionRepository.Select();
+        if(results == null || results.Count == 0)
+        {
+            return Ok("0");
+        }
+        else
+        {
+            string sum = results.Sum(x => int.Parse(x)).ToString();
+            return Ok(sum);
+        }
+    }
+
+    [HttpDelete("DeleteAll")]
+    public IActionResult DeleteAllNumbers()
+    {
+        _additionRepository.DeleteAll();
+        return Ok();
     }
 }
