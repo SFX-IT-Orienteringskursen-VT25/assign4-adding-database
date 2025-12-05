@@ -42,7 +42,7 @@ if (app.Environment.IsDevelopment())
 // });
 app.MapGet("/localStorage/getItem/{key}", (string key) =>
 {
-    var value = Database.GetValue(key); // implement this in Database.cs
+    var value = Database.GetValue(key); 
     return Results.Ok(new { value });
 });
 
