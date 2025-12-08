@@ -7,6 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Remove="AdditionApi.IntegrationTests\**" />
+        <EmbeddedResource Remove="AdditionApi.IntegrationTests\**" />
+        <None Remove="AdditionApi.IntegrationTests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4" />

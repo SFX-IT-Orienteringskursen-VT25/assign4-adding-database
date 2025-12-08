@@ -69,3 +69,5 @@ app.Run();
 
 // Record for the numbers request
 public record NumbersRequest(int[] Numbers);
+
+public partial class Program { }

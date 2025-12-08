@@ -3530,11 +3530,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Heishigan\\Desktop\\assign4-adding-database\\AdditionApi.csproj",
+      "projectUniqueName": "C:\\Users\\Heishigan\\Desktop\\test\\assign5-adding-itest\\AdditionApi.csproj",
       "projectName": "AdditionApi",
-      "projectPath": "C:\\Users\\Heishigan\\Desktop\\assign4-adding-database\\AdditionApi.csproj",
+      "projectPath": "C:\\Users\\Heishigan\\Desktop\\test\\assign5-adding-itest\\AdditionApi.csproj",
       "packagesPath": "C:\\Users\\Heishigan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Heishigan\\Desktop\\assign4-adding-database\\obj\\",
+      "outputPath": "C:\\Users\\Heishigan\\Desktop\\test\\assign5-adding-itest\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Heishigan\\AppData\\Roaming\\NuGet\\NuGet.Config",
