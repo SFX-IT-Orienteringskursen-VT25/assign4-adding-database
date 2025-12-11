@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdditionApi", "AdditionApi.csproj", "{FED9C1D5-D172-4839-993E-0E9F180A6017}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdditionApi.IntegrationTests", "AdditionApi.IntegrationTests\AdditionApi.IntegrationTests.csproj", "{28F54D24-8D8F-49EE-A1B8-AF51CCE79898}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FED9C1D5-D172-4839-993E-0E9F180A6017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FED9C1D5-D172-4839-993E-0E9F180A6017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FED9C1D5-D172-4839-993E-0E9F180A6017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FED9C1D5-D172-4839-993E-0E9F180A6017}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28F54D24-8D8F-49EE-A1B8-AF51CCE79898}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28F54D24-8D8F-49EE-A1B8-AF51CCE79898}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28F54D24-8D8F-49EE-A1B8-AF51CCE79898}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28F54D24-8D8F-49EE-A1B8-AF51CCE79898}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
