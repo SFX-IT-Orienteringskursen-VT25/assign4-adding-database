@@ -1,31 +1,74 @@
-# assign4-adding-database
-The assignment was introduced in Class #8. In the link you can find the slides from the presentation as well as a recording of the class.
-https://classroom.google.com/c/MjI5OTg3MzMwODFa/p/MjM0NjU0MTY0MTVa/details
+# 📂 Assign 4: Adding database 
 
-Class #9 contains my aggregated feedback on your first attempts at the assignment.
-https://classroom.google.com/c/MjI5OTg3MzMwODFa/p/ODA3MDA5NDI3MjE5/details
+## 💡 Project Overview
+The Assign 4 is a simple REST API built on .NET that provides Key-Value Storage functionality.
 
-This simple example shows you how to setup MS SQL server in Docker from your application code
-https://github.com/SFX-IT-Orienteringskursen-VT25/setup-mssql-with-docker-example
+The primary goal of this API is to demonstrate the implementation of minimalist web services using the .NET Minimal APIs architecture and direct connection to a SQL Server database.
 
-## Instructions
-Don't start this assignment until you have finshed assignment 3!
+## ⚙️ Installation
 
-Clone this repository
+*  9.0 .NET Version SDK
 
-Reuse your application from assignment 3.
+* Docker Desktop (Required to run the SQL Server container).
 
-Create a branch
+* HTTP Client: [Postman, Insomnia, or curl] for testing the endpoints.
 
-Requirements:
-- The Api should use MS SQL as the persistence layer
-- The MS SQL server should be hosted in Docker
-- The methods for saving and retrieving data should be done towards the MS SQL database
+## 🚀 Setup and Execution
 
-Commit
+The easiest way to launch both the API service and the database is by using docker-compose.
 
-Push your branch
 
-Create a pull request `<your branch> => <main>`
 
-Done!
+### 💿 Database Configuration
+* The docker-compose.yml file sets up an MSSQL Server container and maps port 1433.
+
+* Database Name: AdditionApiDB
+
+* SA Password: password$123
+
+
+### 🔧 Start Services (Recommended)
+
+From the root directory containing the docker-compose.yml, run:
+
+```bash
+docker compose up --build
+```
+or
+
+build docker and your project separably: 
+
+```bash
+docker compose up 
+```
+
+```bash
+dotnet run
+```
+##### ‼️ Remember to run your project in your correct folder.
+
+## 🧪 API Endpoints
+The application exposes the following endpoints at *http://localhost:5262*
+
+
+GET 
+---
+```bash
+curl http://localhost:5262/api/addition/{key}
+```
+
+POST
+---
+```bash
+curl -X POST http://localhost:5262/api/addition \
+  -H "Content-Type: application/json" \
+  -d '{
+      "key": "1",
+      "value": "1"
+  }'
+```
+
+## 📝 5. Project: 
+
+Application configuration and definition of all Minimal API endpoints and database only with development functions.
+```
