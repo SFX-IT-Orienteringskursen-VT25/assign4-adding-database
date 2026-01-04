@@ -1,27 +1,23 @@
-using AdditionApi.Services;     // <- use our services from the Services folder
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Optional: OpenAPI doc (if template had it)
-builder.Services.AddOpenApi();
-
-// Register our storage service (file-backed)
-builder.Services.AddSingleton<IStorageService>(
-    _ => new FileStorageService(builder.Environment.ContentRootPath));
+var cs = builder.Configuration.GetConnectionString("Default")
+    ?? throw new InvalidOperationException("Missing ConnectionStrings:Default");
+builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(cs));
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi(); // optional
-}
+Console.WriteLine($"ENV={builder.Environment.EnvironmentName}");
+Console.WriteLine($"CS={builder.Configuration.GetConnectionString("Default")}");
+
 
 app.UseHttpsRedirection();
-
-// Map controllers (we will put endpoints in StorageController)
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
+

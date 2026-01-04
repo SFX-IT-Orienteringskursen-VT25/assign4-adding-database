@@ -1,5 +1,8 @@
-using AdditionApi.Services;
+using System.Text.Json;
+using AdditionApi.Data;
+using AdditionApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdditionApi.Controllers;
 
@@ -7,33 +10,42 @@ namespace AdditionApi.Controllers;
 [Route("storage")]
 public class StorageController : ControllerBase
 {
-    private readonly IStorageService _storage;
-    public StorageController(IStorageService storage) => _storage = storage;
+    private readonly AppDbContext _db;
 
-    public record SetValueRequest(object? Value);
+    public StorageController(AppDbContext db) => _db = db;
 
-    // GET /storage/{key}  -> like localStorage.getItem(key)
+    // GET /storage/{key}
     [HttpGet("{key}")]
-    public IActionResult Get(string key)
+    public async Task<IActionResult> Get(string key)
     {
-        var value = _storage.GetItem(key);
-        return value is null
-            ? NotFound(new { error = "Not Found" })           // 404
-            : Ok(new { key, value });                          // 200
+        var item = await _db.StoredItems.FindAsync(key);
+        if (item is null) return NotFound(new { error = "Not Found" });
+
+        var doc = JsonDocument.Parse(item.ValueJson);
+        return Ok(new { key = item.Key, value = doc.RootElement.Clone() });
     }
 
-    // PUT /storage/{key}  -> like localStorage.setItem(key, value)
+    public record SetRequest(JsonElement value);
+
+    // PUT /storage/{key}   body: { "value": ... }
     [HttpPut("{key}")]
-    public IActionResult Put(string key, [FromBody] SetValueRequest body)
+    public async Task<IActionResult> Put(string key, [FromBody] SetRequest req)
     {
-        if (body is null || body.Value is null)
-            return BadRequest(new { error = "value is required" }); // 400
+        if (req.value.ValueKind is JsonValueKind.Undefined or JsonValueKind.Null)
+            return BadRequest(new { error = "value is required" });
 
-        var existed = _storage.SetItem(key, body.Value);
-        var payload = new { key, value = body.Value, created = !existed };
+        var json = req.value.GetRawText();
+        var existing = await _db.StoredItems.FindAsync(key);
 
-        return existed
-            ? Ok(payload)                                              // 200 (updated)
-            : CreatedAtAction(nameof(Get), new { key }, payload);      // 201 (created)
+        if (existing is null)
+        {
+            _db.StoredItems.Add(new StoredItem { Key = key, ValueJson = json });
+            await _db.SaveChangesAsync();
+            return Created($"/storage/{key}", new { key, value = req.value, created = true });
+        }
+
+        existing.ValueJson = json;
+        await _db.SaveChangesAsync();
+        return Ok(new { key, value = req.value, created = false });
     }
 }

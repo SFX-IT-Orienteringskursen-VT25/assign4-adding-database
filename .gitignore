@@ -130,3 +130,4 @@ Thumbs.db
 /.vs
 
 .npmrc
+**/appsettings.*.local.json
