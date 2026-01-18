@@ -1,0 +1,29 @@
+{
+  "name": "mssql-js-api",
+  "version": "1.0.0",
+  "description": "Node.js API with MS SQL in Docker",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "mssql": "^9.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SFX-IT-Orienteringskursen-VT25/assign4-adding-database.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SFX-IT-Orienteringskursen-VT25/assign4-adding-database/issues"
+  },
+  "homepage": "https://github.com/SFX-IT-Orienteringskursen-VT25/assign4-adding-database#readme"
+}
