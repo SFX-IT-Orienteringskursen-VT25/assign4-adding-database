@@ -24,6 +24,10 @@ public class AdditionController : ControllerBase
     [HttpPost]
     public IActionResult InsertNumber([FromBody] string value)
     {
+        if (!int.TryParse(value, out _))
+        {
+            return BadRequest("Value must be a valid integer.");
+        }
         _additionRepository.InsertValue(value);
         return Ok();
     }
