@@ -1,0 +1,15 @@
+@AdditionApi_HostAddress = http://localhost:5262
+
+### setItem
+PUT {{AdditionApi_HostAddress}}/storage/total
+Content-Type: application/json
+
+"42"
+
+### getItem
+GET {{AdditionApi_HostAddress}}/storage/total
+Accept: application/json
+
+### getItem, missing key (404)
+GET {{AdditionApi_HostAddress}}/storage/missing
+Accept: application/json
