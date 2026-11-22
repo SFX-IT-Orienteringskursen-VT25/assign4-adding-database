@@ -130,3 +130,7 @@ Thumbs.db
 /.vs
 
 .npmrc
+
+# Local environment variables and secrets
+.env
+.env.*
