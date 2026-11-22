@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+      <UserSecretsId>8d43b8c7-aaf9-4ef9-a1ca-0ab86963696c</UserSecretsId>
+  </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
+        <PackageReference Include="Microsoft.Data.SqlClient" Version="7.1.2" />
+        <PackageReference Include="Microsoft.OpenApi" Version="2.13.0" />
+    </ItemGroup>
+
+</Project>

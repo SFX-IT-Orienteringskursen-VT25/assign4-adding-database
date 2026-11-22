@@ -29,3 +29,77 @@ Push your branch
 Create a pull request `<your branch> => <main>`
 
 Done!
+## Assignment 4 — Addition API with SQL Server and Docker
+
+This project extends Assignment 3 by storing numbers in Microsoft SQL Server instead of returning hardcoded values.
+
+### Requirements
+
+- .NET 10 SDK
+- Docker Desktop
+- PowerShell
+
+### Database setup
+
+1. Clone the repository.
+2. Create a `.env` file in the repository root:
+
+   ```dotenv
+   MSSQL_SA_PASSWORD=YOUR_STRONG_PASSWORD
+   ```
+
+3. Start SQL Server and initialize the database:
+
+   ```powershell
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Database\init.ps1
+   ```
+
+   This creates the Docker container, the `AdditionDb` database, and the `Numbers` table if they don't already exist.
+
+### Configure the API
+
+Navigate to the API directory:
+
+```powershell
+cd Server\AdditionApi
+```
+
+Configure the connection string using .NET User Secrets:
+
+```powershell
+dotnet user-secrets set "ConnectionStrings:AdditionDb" "Server=localhost,1433;Database=AdditionDb;User Id=sa;Password=YOUR_STRONG_PASSWORD;Encrypt=True;TrustServerCertificate=True;"
+```
+
+Use the same password as in `.env`.
+
+### Run the API
+
+```powershell
+dotnet run
+```
+
+### API endpoints
+
+**GET `/api/numbers`**
+
+Returns the numbers stored in SQL Server.
+
+**PUT `/api/numbers`**
+
+Replaces the existing numbers with the supplied JSON array.
+
+Example request body:
+
+```json
+[5, 10, 3]
+```
+
+### Stop SQL Server
+
+From the repository root:
+
+```powershell
+docker compose down
+```
+
+The database remains stored in the persistent Docker volume.
