@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using AdditionApi;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,8 @@ builder.Services.AddDbContext<StorageDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 var app = builder.Build();
+
+await DockerStarter.StartDockerContainerAsync("YourStrong!Password123");
 
 using (var scope = app.Services.CreateScope())
 {
